@@ -1,35 +1,41 @@
 <!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
-<title>Orbit Builder V3 AI</title>
+<title>Orbit V5 - No Key Needed</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<style>@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&display=swap');body{font-family:'Space Grotesk'}</style>
 </head>
-<body class="bg-black text-white p-4 font-sans">
-<div class="max-w-md mx-auto">
-<h1 class="text-3xl font-bold text-center mt-10">🚀 ORBIT BUILDER V3</h1>
-<p class="text-center text-zinc-400 mb-6">Type prompt -> AI builds app</p>
-<textarea id="prompt" class="w-full h-24 bg-zinc-900 rounded-xl p-4 text-white" placeholder="e.g. instagram for gamers..."></textarea>
-<button onclick="build()" class="w-full mt-4 bg-white text-black py-4 rounded-xl font-bold">✨ BUILD WITH AI</button>
-<div id="result" style="display:none" class="mt-6 bg-zinc-900 rounded-xl p-4">
-<h2 id="appName" class="font-bold"></h2>
-<div id="logs" class="text-sm text-zinc-300 mt-2"></div>
-<div id="preview" style="display:none" class="mt-4 p-3 bg-zinc-800 rounded-lg">
-✓ For You Feed<br>✓ Orbit Chats<br>✓ Groups + Likes<br><br><span class="text-green-400">Live Preview Ready!</span>
+<body class="bg-[#08080a] text-white p-4">
+<div class="max-w-6xl mx-auto md:flex gap-6">
+<div class="md:w-[380px]">
+<h1 class="font-bold py-4">◉ ORBIT V5</h1>
+<h2 class="text-4xl font-bold">Build &<br><span class="text-zinc-600">Publish.</span></h2>
+<div class="mt-6 bg-[#141417] rounded-2xl p-4 border border-zinc-800">
+<textarea id="prompt" class="w-full h-28 bg-black border border-zinc-800 rounded-xl p-3 text-sm outline-none" placeholder="e.g. Instagram for gamers, Food delivery app, Chat app..."></textarea>
+<button onclick="buildApp()" class="w-full mt-4 bg-white text-black py-3 rounded-full font-bold">✨ GENERATE INSTANTLY</button>
+<button id="pubBtn" onclick="publishApp()" class="hidden w-full mt-3 bg-violet-600 py-3 rounded-full font-bold">🚀 PUBLISH</button>
+<div id="publishBox" class="hidden mt-3 bg-green-900/20 border border-green-500/20 rounded-xl p-3 text-xs"></div>
 </div>
 </div>
+<div class="flex-1 mt-6 md:mt-0"><div class="bg-[#141417] rounded-3xl p-2 border border-zinc-800"><div id="phone" class="bg-white text-black rounded-2xl min-h-[600px]"><div id="appContent" class="p-10 text-center pt-20 text-zinc-400">Prompt ekak dala Generate karapan bro - API Key ona na!</div></div></div></div>
 </div>
 <script>
-const GEMINI_KEY = "AQ.Ab8RN6J8zs5TSBfwsgel_7hg8Qf29bqpy8y0LQ7kTQttFup1eQ"; // <-- ME THANATA UBA GE KEY EKA PASTE KARANNA, quotes athule!
-async function build(){
- let p=document.getElementById('prompt').value;
- if(!p) return alert('Prompt ekak danna bm!');
- let r=document.getElementById('result'); r.style.display='block';
- let l=document.getElementById('logs'); l.innerHTML="🤖 AI thinking...<br>Connecting to Gemini...";
- try{
-  let res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:`Build app for: ${p}. List 3 cool features in Sinhala mix.`}]}]})});
-  let d=await res.json(); let t=d.candidates?.[0]?.content?.parts?.[0]?.text||"App built! Feed + Chat + Groups added!";
-  l.innerHTML="✓ AI Connected!<br><br>"+t.replace(/\n/g,"<br>");
-  document.getElementById('preview').style.display='block'; document.getElementById('appName').innerText=p;
- }catch(e){ l.innerHTML="⚡ Demo Mode (Key error):<br>✓ Feed created<br>✓ Chat added<br>Check API key!"; document.getElementById('preview').style.display='block'; document.getElementById('appName').innerText=p;}
+let lastHTML="", lastUrl="";
+function buildApp(){
+let p=document.getElementById('prompt').value.toLowerCase(); if(!p) return alert('Prompt danna!');
+let name="MyApp"; let feats=["Feed","Chat","Profile"]; let color="from-violet-500 to-fuchsia-500";
+if(p.includes('game')||p.includes('gamer')){ name="GamerGram"; feats=["Clip Feed with Highlights","Squad Voice Rooms","Loot Marketplace"]; }
+else if(p.includes('food')){ name="FoodSnap"; feats=["Reels for Food","Instant Order","Chef Live"]; }
+else if(p.includes('chat')){ name="Orbit Chat"; feats=["Group Chats","Voice Notes","Story Circles"]; }
+else if(p.includes('insta')){ name="InstaVibe"; feats=["Photo Feed","Reels","DM"]; }
+else { name=p.split(' ').slice(0,2).join(' '); feats=[p+" Feed", p+" Chat", p+" Explore"]; }
+let html=`<div class='p-4 flex justify-between border-b'><b>${name}</b><span>☰</span></div><div class='p-3 space-y-3 bg-zinc-50'>${feats.map((f,i)=>`<div class='bg-white rounded-2xl p-4 border'><div class='text-[10px] text-zinc-400'>0${i+1}</div><b>${f}</b><div class='h-28 mt-2 rounded-xl bg-gradient-to-br ${color}'></div><div class='flex gap-2 mt-2'><span class='bg-black text-white text-xs px-3 py-1 rounded-full'>♥</span><span class='border text-xs px-3 py-1 rounded-full'>Share</span></div></div>`).join('')}</div>`;
+document.getElementById('appContent').innerHTML=html; lastHTML=`<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><script src="https://cdn.tailwindcss.com"><\/script></head><body>${html}</body></html>`;
+document.getElementById('pubBtn').classList.remove('hidden');
+}
+function publishApp(){
+let blob=new Blob([lastHTML],{type:'text/html'}); lastUrl=URL.createObjectURL(blob);
+document.getElementById('publishBox').classList.remove('hidden');
+document.getElementById('publishBox').innerHTML=`✓ PUBLISHED!<br><a href='${lastUrl}' target='_blank' class='underline text-green-400 font-bold'>👉 Open Your App Link</a><br><br><button onclick="let a=document.createElement('a');a.href=lastUrl;a.download='app.html';a.click()" class='bg-white text-black px-3 py-1 rounded-full'>Download</button>`;
 }
 </script>
 </body></html>
