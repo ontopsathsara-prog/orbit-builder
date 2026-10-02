@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Orbit Builder - Free AI App Builder</title>
+  <style>
+    body { background: #0A0A0F; color: white; font-family: sans-serif; text-align: center; padding: 50px; }
+    .logo { font-size: 40px; color: #4F46E5; }
+    input { padding: 15px; width: 60%; border-radius: 10px; border: 1px solid #4F46E5; background: #111; color: white; }
+    button { padding: 15px 30px; background: #4F46E5; color: white; border: none; border-radius: 10px; margin-left: 10px; cursor: pointer; }
+    .card { background: #15151F; padding: 20px; border-radius: 15px; margin: 20px auto; width: 60%; }
+  </style>
+</head>
+<body>
+  <div class="logo">🪐 Orbit Builder</div>
+  <h1>Build Apps with AI - 100% FREE</h1>
+  <p>No $25. Just prompt and build!</p>
+  
+  <div style="margin-top:40px">
+    <input id="prompt" placeholder="Ex: Build me a chat app like WhatsApp...">
+    <button onclick="buildApp()">Build with AI ✨</button>
+  </div>
+
+  <div id="result" class="card" style="display:none">
+    <h3>🚀 Your App is Building...</h3>
+    <p id="appPreview"></p>
+    <a href="#" style="color:#4F46E5">View Live Link</a>
+  </div>
+
+  <script>
+    function buildApp(){
+      let p = document.getElementById('prompt').value;
+      document.getElementById('result').style.display='block';
+      document.getElementById('appPreview').innerText = "AI is building: " + p + " (For You Feed + Chats + Groups added!)";
+    }
+  </script>
+</body>
+</html>
