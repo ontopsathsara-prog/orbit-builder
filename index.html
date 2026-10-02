@@ -1,34 +1,35 @@
-<!-- V3 AI eka add kara - idan udata thiyena code eke script tag eka replace karanna -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>Orbit Builder V3 AI</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white p-4 font-sans">
+<div class="max-w-md mx-auto">
+<h1 class="text-3xl font-bold text-center mt-10">🚀 ORBIT BUILDER V3</h1>
+<p class="text-center text-zinc-400 mb-6">Type prompt -> AI builds app</p>
+<textarea id="prompt" class="w-full h-24 bg-zinc-900 rounded-xl p-4 text-white" placeholder="e.g. instagram for gamers..."></textarea>
+<button onclick="build()" class="w-full mt-4 bg-white text-black py-4 rounded-xl font-bold">✨ BUILD WITH AI</button>
+<div id="result" style="display:none" class="mt-6 bg-zinc-900 rounded-xl p-4">
+<h2 id="appName" class="font-bold"></h2>
+<div id="logs" class="text-sm text-zinc-300 mt-2"></div>
+<div id="preview" style="display:none" class="mt-4 p-3 bg-zinc-800 rounded-lg">
+✓ For You Feed<br>✓ Orbit Chats<br>✓ Groups + Likes<br><br><span class="text-green-400">Live Preview Ready!</span>
+</div>
+</div>
+</div>
 <script>
-const GEMINI_KEY = "AQ.Ab8RN6J8zs5TSBfwsgel_7hg8Qf29bqpy8y0LQ7kTQttFup1eQ"; // <-- oya key eka meke paste karanna
-
-function setP(t){document.getElementById('prompt').value=t;build()}
-
+const GEMINI_KEY = "AQ.Ab8RN6J8zs5TSBfwsgel_7hg8Qf29bqpy8y0LQ7kTQttFup1eQ"; // <-- ME THANATA UBA GE KEY EKA PASTE KARANNA, quotes athule!
 async function build(){
- let p = document.getElementById('prompt').value;
+ let p=document.getElementById('prompt').value;
  if(!p) return alert('Prompt ekak danna bm!');
- let result = document.getElementById('result');
- result.style.display='block';
- document.getElementById('logs').innerHTML = "🤖 AI thinking...<br>Connecting to Gemini...";
- window.scrollTo(0,document.body.scrollHeight);
-
+ let r=document.getElementById('result'); r.style.display='block';
+ let l=document.getElementById('logs'); l.innerHTML="🤖 AI thinking...<br>Connecting to Gemini...";
  try{
-   let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,{
-     method:"POST",
-     headers:{"Content-Type":"application/json"},
-     body: JSON.stringify({contents:[{parts:[{text: `You are Orbit Builder AI. User wants: "${p}". Reply with 3 bullet points what app you will build (like For You Feed, Chats). Keep it short, cool, in Sinhala mix English.`}]}]})
-   });
-   let data = await res.json();
-   let aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || "App eka hadanawa... For You Feed + Chat + Groups add kala!";
-
-   document.getElementById('logs').innerHTML = "✓ AI connected!<br><br>" + aiText.replace(/\n/g,'<br>');
-   document.getElementById('preview').style.display='block';
-   document.getElementById('appName').innerText = p;
- }catch(e){
-   // Key eka naththam fake AI wada karanawa
-   document.getElementById('logs').innerHTML = "⚡ AI Demo Mode:<br>✓ For You Feed created<br>✓ Orbit Chat added<br>✓ Groups & Likes added<br><br>Real AI ona nam key eka danna! Free!";
-   document.getElementById('preview').style.display='block';
-   document.getElementById('appName').innerText = p;
- }
+  let res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:`Build app for: ${p}. List 3 cool features in Sinhala mix.`}]}]})});
+  let d=await res.json(); let t=d.candidates?.[0]?.content?.parts?.[0]?.text||"App built! Feed + Chat + Groups added!";
+  l.innerHTML="✓ AI Connected!<br><br>"+t.replace(/\n/g,"<br>");
+  document.getElementById('preview').style.display='block'; document.getElementById('appName').innerText=p;
+ }catch(e){ l.innerHTML="⚡ Demo Mode (Key error):<br>✓ Feed created<br>✓ Chat added<br>Check API key!"; document.getElementById('preview').style.display='block'; document.getElementById('appName').innerText=p;}
 }
 </script>
+</body></html>
